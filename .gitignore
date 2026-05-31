@@ -1,0 +1,61 @@
+﻿# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.virtualenv/
+*.venv/
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+
+# Streamlit local state and secrets
+.streamlit/secrets.toml
+.streamlit/credentials.toml
+.streamlit/cache/
+.streamlit/*.log
+
+# Runtime exports and logs
+chat_history.txt
+*.log
+
+# Hugging Face and model caches
+.cache/
+hf_cache/
+huggingface/
+huggingface_cache/
+models--*/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
