@@ -11,14 +11,14 @@ from dataclasses import dataclass
 class ModelConfig:
     """Runtime configuration for the Hugging Face text2text model."""
 
-    model_name: str = os.getenv("MODEL_NAME", "google/flan-t5-base")
+    model_name: str = os.getenv("MODEL_NAME", "google/flan-t5-small")
     device: int = int(os.getenv("MODEL_DEVICE", "-1"))
     default_temperature: float = float(os.getenv("DEFAULT_TEMPERATURE", "0.7"))
     default_max_new_tokens: int = int(os.getenv("DEFAULT_MAX_NEW_TOKENS", "256"))
     min_temperature: float = 0.0
     max_temperature: float = 1.5
     min_new_tokens: int = 32
-    max_new_tokens: int = 1024
+    max_new_tokens: int = 512
 
 
 @dataclass(frozen=True)

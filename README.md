@@ -1,6 +1,6 @@
 ﻿# Multi Task Chatbot
 
-A modular Streamlit application for common NLP workflows powered by LangChain and Hugging Face Transformers. The app uses `google/flan-t5-base` by default and exposes a single interface for text generation, summarization, translation, sentiment analysis, and context-based question answering.
+A modular Streamlit application for common NLP workflows powered directly by Hugging Face Transformers. The app uses `google/flan-t5-small` by default and exposes a single interface for text generation, summarization, translation, sentiment analysis, and context-based question answering.
 
 ## Features
 
@@ -43,7 +43,7 @@ multi_task_chatbot/
 
 ## Requirements
 
-- Python 3.10 or newer recommended
+- Python 3.11, as declared in `runtime.txt`
 - Enough disk space for the Hugging Face model download
 - CPU works by default; CUDA can be used by setting `MODEL_DEVICE=0` when PyTorch with CUDA is installed
 
@@ -68,12 +68,14 @@ The app runs with defaults, but these environment variables can override runtime
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `MODEL_NAME` | `google/flan-t5-base` | Hugging Face model ID |
+| `MODEL_NAME` | `google/flan-t5-small` | Hugging Face model ID |
 | `MODEL_DEVICE` | `-1` | `-1` for CPU, `0` for first CUDA GPU |
 | `DEFAULT_TEMPERATURE` | `0.7` | Default generation temperature |
 | `DEFAULT_MAX_NEW_TOKENS` | `256` | Default response token limit |
 | `CHAT_HISTORY_FILE` | `chat_history.txt` | Local export path for saved history |
 | `LOG_LEVEL` | `INFO` | Python logging level |
+
+Common translation targets use dedicated Helsinki-NLP OPUS models for more reliable output. Other target languages fall back to the default FLAN text2text model.
 
 PowerShell example:
 
@@ -99,7 +101,7 @@ http://localhost:8501
 
 - `app.py` is the Streamlit entrypoint.
 - `config.py` centralizes model and application settings.
-- `models/llm.py` loads and caches the Hugging Face Transformers pipeline, then wraps it for LangChain.
+- `models/llm.py` loads and caches the Hugging Face Transformers model and tokenizer.
 - `prompts/` contains task-specific prompt templates.
 - `chains/` contains one focused function per NLP workflow.
 - `utils/router.py` maps UI task selections to chain functions.

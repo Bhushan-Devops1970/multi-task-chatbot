@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from langchain.chains import LLMChain
-
-from models.llm import get_llm
+from models.llm import generate_from_prompt
 from prompts.sentiment_prompt import SENTIMENT_PROMPT
 
 logger = logging.getLogger(__name__)
@@ -22,11 +20,11 @@ def analyze_sentiment(text: str, temperature: float, max_new_tokens: int) -> str
         raise ValueError("Please enter text for sentiment analysis.")
 
     try:
-        chain = LLMChain(
-            llm=get_llm(temperature=temperature, max_new_tokens=max_new_tokens),
-            prompt=SENTIMENT_PROMPT,
+        response = generate_from_prompt(
+            SENTIMENT_PROMPT.format(source_text=text.strip()),
+            temperature=0.0,
+            max_new_tokens=min(max_new_tokens, 96),
         )
-        response = chain.run(source_text=text.strip()).strip()
         normalized = response.lower()
 
         for sentiment in VALID_SENTIMENTS:

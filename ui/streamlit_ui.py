@@ -40,13 +40,13 @@ def main() -> None:
     configure_logging()
     st.set_page_config(
         page_title=APP_CONFIG.app_name,
-        page_icon="AI",
+        page_icon=":robot_face:",
         layout="wide",
     )
     initialize_session_state()
 
     st.title(APP_CONFIG.app_name)
-    st.caption("A modular LangChain and Hugging Face assistant for common NLP tasks.")
+    st.caption("A modular Hugging Face Transformers assistant for common NLP tasks.")
 
     temperature, max_new_tokens, save_path = render_sidebar()
 

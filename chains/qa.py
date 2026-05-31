@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from langchain.chains import LLMChain
-
-from models.llm import get_llm
+from models.llm import generate_from_prompt
 from prompts.qa_prompt import QA_PROMPT
 
 logger = logging.getLogger(__name__)
@@ -26,14 +24,15 @@ def answer_question(
         raise ValueError("Please enter a question.")
 
     try:
-        chain = LLMChain(
-            llm=get_llm(temperature=temperature, max_new_tokens=max_new_tokens),
-            prompt=QA_PROMPT,
-        )
-        return chain.run(
+        model_prompt = QA_PROMPT.format(
             context=context.strip(),
             question=question.strip(),
-        ).strip()
+        )
+        return generate_from_prompt(
+            model_prompt,
+            temperature=temperature,
+            max_new_tokens=max_new_tokens,
+        )
     except Exception:
         logger.exception("Question answering failed")
         raise

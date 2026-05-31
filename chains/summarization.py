@@ -4,9 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from langchain.chains import LLMChain
-
-from models.llm import get_llm
+from models.llm import generate_from_prompt
 from prompts.summary_prompt import SUMMARY_PROMPT
 from utils.helpers import chunk_text
 
@@ -20,13 +18,13 @@ def summarize_text(text: str, temperature: float, max_new_tokens: int) -> str:
         raise ValueError("Please enter text to summarize.")
 
     try:
-        chain = LLMChain(
-            llm=get_llm(temperature=temperature, max_new_tokens=max_new_tokens),
-            prompt=SUMMARY_PROMPT,
-        )
         chunks = chunk_text(text.strip(), max_words=350)
         summaries = [
-            chain.run(source_text=chunk).strip()
+            generate_from_prompt(
+                SUMMARY_PROMPT.format(source_text=chunk),
+                temperature=temperature,
+                max_new_tokens=max_new_tokens,
+            )
             for chunk in chunks
             if chunk.strip()
         ]
@@ -35,7 +33,11 @@ def summarize_text(text: str, temperature: float, max_new_tokens: int) -> str:
             return summaries[0]
 
         combined = "\n".join(summaries)
-        return chain.run(source_text=combined).strip()
+        return generate_from_prompt(
+            SUMMARY_PROMPT.format(source_text=combined),
+            temperature=temperature,
+            max_new_tokens=max_new_tokens,
+        )
     except Exception:
         logger.exception("Summarization failed")
         raise
